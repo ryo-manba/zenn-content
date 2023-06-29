@@ -2,8 +2,8 @@
 title: "React Ariaを用いてアクセシブルなReactコンポーネントを作成する"
 emoji: "🐕"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["React", "a11y", "React Aria"]
-published: false
+topics: ["React", "a11y"]
+published: true
 ---
 
 ## React Ariaとは？
@@ -13,6 +13,8 @@ published: false
 キーボードとマウスのインタラクション、スクリーンリーダーのサポート、ARIA属性などに関する動作を抽象化することで、開発者は実装の詳細を気に留めることなく、ユーザー体験にフォーカスを当てることができます。
 
 ## パッケージのインストール
+
+https://www.npmjs.com/package/react-aria
 
 React Ariaをインストールするには以下のコマンドを使用します。
 
