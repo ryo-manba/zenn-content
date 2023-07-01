@@ -118,6 +118,7 @@ return {
         }
       }
     })
+  }
 ```
 
 上記のプロパティの中には以下のようなものが含まれます：
@@ -147,8 +148,9 @@ React Ariaを活用してより複雑なコンポーネントの作成方法も�
 
 ```tsx
 import { useRef } from 'react';
-import { useTab, useTabList, useTabPanel } from 'react-aria';
+import { useTabList } from 'react-aria';
 import { Item, useTabListState } from 'react-stately';
+import type { TabListStateOptions } from '@react-stately/tabs';
 
 export const Tabs = <T extends object>(props: TabListStateOptions<T>) => {
   const state = useTabListState(props);
@@ -202,9 +204,15 @@ export const TabItem = (props: TabItemProps) => {
 TabItem.getCollectionNode = Item.getCollectionNode;
 ```
 
+2023-07-01 追記：React StatelyとReact Server Componentを組み合わせる場合の注意点
+
+React Server Componentの特性として、クライアントコンポーネントの子要素としてサーバーコンポーネントを使用することが可能です。しかしReact AriaのItemコンポーネントを使用する場合は子要素もクライアントコンポーネントにしないといけません。
+
+これは、Itemコンポーネントの内部で`getCollectionNode`ジェネレータ関数を使用して子要素を探索しているからだと思われます。
+
 ## まとめ
 
-React Ariaを活用してわかったことは以下の３つです。
+React Ariaを活用してわかったことは以下の３点です。
 
 - 手軽にアクセシブルなコンポーネントが実現できる。
 - コンポーネント単位で導入できるためコストが低い。
