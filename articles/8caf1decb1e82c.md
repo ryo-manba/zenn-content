@@ -1,9 +1,10 @@
 ---
 title: "Next.js 13 Template と Layout の使い分け"
 emoji: "📑"
-type: "tech" # tech: 技術記事 / idea: アイデア
+type: "tech"
 topics: ["nextjs", "react"]
 published: false
+publication_name: "cybozu_frontend"
 ---
 
 Next.js 13には、LayoutとTemplateというよく似た機能が存在します。
