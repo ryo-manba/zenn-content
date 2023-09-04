@@ -13,11 +13,11 @@ Next.js 13には、LayoutとTemplateというよく似た機能が存在しま�
 ## Layoutとは？
 
 Layoutは複数のページに渡って共有されるUIのことを指します。
-特徴としてはナビゲーションが行われた際に、その状態を保持し、再レンダリングは行われません。またLayoutはネスト（入れ子）にして使用することも可能です。
+特徴としては画面遷移が行われた際に、その状態を保持し、再レンダリングは行われません。またLayoutはネスト（入れ子）にして使用することも可能です。
 
 ### Layoutの定義方法
 
-`layout.tsx` ファイルでReactコンポーネントとして定義できます。
+appディレクトリ配下で `layout.tsx` ファイルを定義するとLayoutとして定義できます。
 例えば、以下のようなLayoutを定義することができます。
 
 ```tsx
@@ -66,7 +66,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 }
 ```
 
-`posts/1` と `posts/2` にアクセスした場合はそれぞれいかのように表示されます。
+`posts/1` と `posts/2` にアクセスした場合はそれぞれ以下のように表示されます。
 
 ```tsx
 // posts/1
@@ -85,7 +85,7 @@ Layout Footer
 ## Templateとは？
 
 TemplateはLayoutによく似た機能で、子レイアウトやページをラップします。
-しかし、Layoutがページ遷移間でステートを維持するのに対して、Templateは各ページ遷移ごとに新しいインスタンスを生成します。
+しかし、Layoutがページ遷移間でステートを維持するのに対して、Templateは各ページ遷移ごとに新しいステートを生成します。
 これは、ユーザがTemplateを適用した複数のページ間を移動する際に、新しいDOM要素が生成され、ステートやエフェクトは再同期されるということです。
 
 ### Templateの定義方法
@@ -95,15 +95,13 @@ TemplateはLayoutによく似た機能で、子レイアウトやページをラ
 
 ```tsx
 // app/posts/template.tsx
-"use client";
-
 export default function Template({ children }: { children: React.ReactNode }) {
   return (
-    <div>
+    <>
       <h2>Template Header</h2>
       {children}
       <h2>Template Footer</h2>
-    </div>
+    </>
   );
 }
 ```
@@ -153,7 +151,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     <>
       <div>posts: {params.slug}</div>
       {/* 以下のリンクをクリックすると posts/1 -> posts/2 のように画面遷移を行う */}
-      <Link href={`/posts/${Number(params.slug) + 1}`} className="outline">
+      <Link href={`/posts/${Number(params.slug) + 1}`}>
         Go to next page
       </Link>
     </>
@@ -167,20 +165,16 @@ export default function Page({ params }: { params: { slug: string } }) {
 // app/posts/layout.tsx
 "use client";
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     console.log('Layout rendered');
   }, []);
   return (
-    <div>
+    <>
       <h2>Layout Header</h2>
       {children}
       <h2>Layout Footer</h2>
-    </div>
+    </>
   );
 }
 ```
@@ -194,11 +188,11 @@ export default function Template({ children }: { children: React.ReactNode }) {
     console.log('Template rendered');
   }, []);
   return (
-    <div>
+    <>
       <h2>Template Header</h2>
       {children}
       <h2>Template Footer</h2>
-    </div>
+    </>
   );
 }
 ```
@@ -222,7 +216,6 @@ Template rendered
 
 ページの再レンダリングが必要な場合とは以下のようなシチュエーションが考えられます。
 
-- ページ遷移時にAPIを叩いてデータを取得する
 - ページ遷移時にアニメーションを行う
 - 各ページで独立したロギングを行う
 - ページごとにフィードバックフォームを表示する
@@ -232,7 +225,7 @@ Template rendered
 ## まとめ
 
 LayoutとTemplateの違いは、ページの再レンダリングの挙動です。
-パフォーマンスの観点から、特に理由がない場合はLayoutを使用した方が良さそうですね。
+パフォーマンスの観点から、ページの再レンダリングが不要な場合はLayoutを使用した方が良さそうですね。
 
 ## 参考
 
