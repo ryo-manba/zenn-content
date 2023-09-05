@@ -3,7 +3,7 @@ title: "Next.js 13 Template と Layout の使い分け"
 emoji: "📑"
 type: "tech"
 topics: ["nextjs", "react", "フロントエンド"]
-published: false
+published: true
 publication_name: "cybozu_frontend"
 ---
 
