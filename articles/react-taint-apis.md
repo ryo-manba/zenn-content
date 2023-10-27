@@ -133,7 +133,7 @@ export const getUserWithTaintObjectReference = async (userId: number) => {
     return null;
   }
 
-  // Client Component からのアクセスを禁止する
+  // user オブジェクトを Client Component からアクセスを禁止する
   taintObjectReference(
     "Do not pass user data to the client", 
     user
@@ -168,17 +168,9 @@ export const Profile = async ({ userId }: Props) => {
 処理の流れを整理すると、`Profile`（Server Component）でユーザー情報を取得し、その後、`InfoCard`（Client Component）にその情報を渡しています。
 この時、`getUserWithTaintObjectReference` で `taintObjectReference` を使用しているため、`InfoCard` に渡した際にエラーが発生します。
 
-また以下のように、コンポーネントの階層が深くなっても、保護されたオブジェクトがClient Component に渡ったタイミングでエラーが発生します。
+また以下のように、コンポーネントの階層が深くなっても、保護されたオブジェクトが Client Component に渡ったタイミングでエラーが発生します。
 
 ```tsx
-import { getUserWithTaintObjectReference } from "./get-user";
-import { InfoCard } from "./info-card";
-import type { User } from "./types";
-
-type Props = {
-  userId: number;
-};
-
 const NestedComponent = ({ user }: { user: User }) => {
   return <InfoCard user={user} />;
 }
@@ -221,8 +213,10 @@ export const Profile = async ({ userId }: Props) => {
 引数には、以下の値を渡します。
 
 第一引数：Client Component に渡した場合に表示するカスタムのエラーメッセージ
-第二引数：対象の値を保護する期間。プロパティの場合は、オブジェクト自体を渡す。
+第二引数：対象の値を保護する期間を示すオブジェクト
 第三引数：対象の値
+
+`taintUniqueValue` の場合には、`taintObjectReference` とはインターフェースが異なり、第二引数に入れたオブジェクトが存在する間だけ対象の値（第三引数）へのアクセスを防いでくれます。通常であれば、プロパティの値を含むオブジェクトを渡すことになります。
 
 以下の例では、ユーザー情報を取得し、その中の `password` プロパティだけを Client Component からのアクセスを禁止にしています。
 
@@ -233,7 +227,7 @@ export const getUserWithTaintUniqueValue = async (userId: number) => {
     return null;
   }
 
-  // user.password のみを client component からアクセスできないようにする
+  // user.password のみを Client Component からアクセス禁止にする
   taintUniqueValue(
     "Do not pass password to the client",
     user,
@@ -269,19 +263,12 @@ export const Profile = async ({ userId }: Props) => {
 ただし、Client Component からのアクセスを防ぎたいのは、パスワードだけなのでその他のプロパティにはアクセスしたいです。そこで、以下のように `password` プロパティを除いて他の情報を渡す場合、エラーは発生しません。
 
 ```tsx
-import { getUserWithTaintUniqueValue } from "./get-user";
-import { InfoCard } from "./info-card";
-
-type Props = {
-  userId: number;
-};
-
 export const Profile = async ({ userId }: Props) => {
   const user = await getUserWithTaintUniqueValue(userId);
   if (!user) {
     return <div>User not found.</div>;
   }
-  // password を除いて渡す
+  // password を除いて Client Component に渡す
   const { password, ...safeUser } = user;
   return <InfoCard user={safeUser} />;
 };
@@ -289,7 +276,25 @@ export const Profile = async ({ userId }: Props) => {
 
 ![パスワード以外の情報が表示される](/images/react-taint-apis/user-info-no-password.png)
 
-`taintUniqueValue` を実行したパスワード以外の情報は、Client Component に渡せることが確認できました。このように一部のプロパティだけを保護する時に役立つのが `taintUniqueValue` です。
+`taintUniqueValue` を実行したパスワード以外の情報は、Client Component に渡せることが確認できました。このように一部のプロパティだけを保護する時に役立ちます。
+
+ちなみに、`taintObjectReference` で分割代入などをしたら結局保護が無効になる話を踏まえると、上記の例でも保護が無効になるように思えますが、`taintUniqueValue` の場合は、分割代入をしても保護が有効になるようです。
+
+```tsx
+export const Profile = async ({ userId }: Props) => {
+  const user = await getUserWithTaintUniqueValue(userId);
+  if (!user) {
+    return <div>User not found.</div>;
+  }
+  // name を除いて Client Component に渡す
+  const { name, ...unsafeUser } = user;
+  return <InfoCard user={unsafeUser} />;
+};
+```
+
+以下の通り、分割代入をしてもエラーが発生します。
+
+![taintUniqueValue のエラーメッセージ](/images/react-taint-apis/taint-unique-value-error.png)
 
 ただし、これにも注意点があります。以下のように `toUpperCase` などのメソッドを使用して、値に変更を加えてしまうとその効果を失ってしまいます。
 
@@ -301,6 +306,7 @@ export const Profile = async ({ userId }: Props) => {
   }
   const dirty = {
     ...user,
+    // password を大文字に変換する
     password: user.password.toUpperCase(),
   };
   return <InfoCard user={dirty} />;
