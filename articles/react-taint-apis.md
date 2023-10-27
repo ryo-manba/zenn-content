@@ -133,7 +133,7 @@ export const getUserWithTaintObjectReference = async (userId: number) => {
     return null;
   }
 
-  // Client Component からのアクセスを禁止する
+  // user を Client Component からアクセス禁止にする
   taintObjectReference(
     "Do not pass user data to the client", 
     user
@@ -216,7 +216,7 @@ export const Profile = async ({ userId }: Props) => {
 第二引数：対象の値を保護する期間を示すオブジェクト
 第三引数：対象の値
 
-`taintUniqueValue` の場合には、`taintObjectReference` とはインターフェースが異なり、第二引数に入れたオブジェクトが存在する間だけ対象の値（第三引数）へのアクセスを防いでくれます。通常であれば、プロパティの値を含むオブジェクトを渡すことになります。
+`taintUniqueValue` の場合には、`taintObjectReference` とはインターフェースが異なり、第二引数に入れたオブジェクトが存在する間だけ対象の値（第三引数）へのアクセスを防いでくれます。通常であれば、第二引数にはプロパティの値を含むオブジェクトを渡すことになります。
 
 以下の例では、ユーザー情報を取得し、その中の `password` プロパティだけを Client Component からのアクセスを禁止にしています。
 
