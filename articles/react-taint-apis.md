@@ -1,5 +1,5 @@
 ---
-title: "Next.js14で導入されたReact Taint APIsを試してみた"
+title: "Next.js 14 で導入された React Taint APIs を試してみた"
 emoji: "🔏"
 type: "tech"
 topics: ["nextjs", "react", "フロントエンド"]
