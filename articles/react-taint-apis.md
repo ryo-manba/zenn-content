@@ -31,8 +31,6 @@ React Taint APIs の目的は、このようなセンシティブなデータの
 
 ## React Taint APIs を試してみる
 
-ここからは実際に React Taint APIs を試してみます。
-
 ### 前準備
 
 Next.js の最新の canary バージョンでセットアップします。(canaryで試しましたが、2023/10/27 時点では Next.js 14 でも利用可能です)
@@ -119,7 +117,7 @@ export const InfoCard = ({ user }: Props) => {
 しかし、現状だとユーザーのパスワードも表示されるため、セキュリティ上のリスクが生じます。
 そこで、 React Taint APIs を使用して、パスワードがクライアントに渡らないようにしてみましょう。
 
-### taintObjectReference を使ってみる
+### taintObjectReference
 
 `taintObjectReference` を使用して、特定のオブジェクトを Client Component でアクセスできないようにします。`getUser` で取得した生のユーザーデータに `taintObjectReference` を使用することで、そのオブジェクトが Client Component に渡った際にエラーが発生するようになります。
 
