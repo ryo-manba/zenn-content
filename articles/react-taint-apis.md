@@ -133,7 +133,7 @@ export const getUserWithTaintObjectReference = async (userId: number) => {
     return null;
   }
 
-  // user オブジェクトを Client Component からアクセスを禁止する
+  // Client Component からのアクセスを禁止する
   taintObjectReference(
     "Do not pass user data to the client", 
     user
