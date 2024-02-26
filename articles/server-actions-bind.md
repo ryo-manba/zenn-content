@@ -18,7 +18,7 @@ Next.js の [Server Actions](https://nextjs.org/docs/app/building-your-applicati
 `'use server'` をファイルの先頭に追加して、サーバー側で実行したい関数を定義します。
 
 ```tsx:actions.ts
-'use server';
+"use server";
 
 export async function myAction(formData) {
   // データベースへのアクセスなどの処理
@@ -29,16 +29,15 @@ export async function myAction(formData) {
 Server Actions をフォームで使用する際には、`action` 属性にその関数を指定します。
 
 ```tsx
-'use client'
- 
-import { myAction } from './actions'
- 
+"use client";
+import { myAction } from "./actions";
+
 export default function ClientComponent() {
   return (
     <form action={myAction}>
       <button type="submit">Add to Cart</button>
     </form>
-  )
+  );
 }
 ```
 
@@ -54,14 +53,17 @@ export default function ClientComponent() {
 Server Actions を使用する際も、以下の例のようにフォーム内に隠しフィールドを設定してデータを送信することができます。
 
 ```tsx
+"use client";
+import { myAction } from "./actions";
+
 export default function ClientComponent() {
   return (
     <form action={myAction}>
       {/* 画面には表示されない隠しフィールドを設定する */}
-      <input type="hidden" name="id" value="userId" />
+      <input type="hidden" name="user-id" value="userId-1" />
       <button type="submit">Update User</button>
     </form>
-  )
+  );
 }
 ```
 
@@ -70,8 +72,8 @@ export default function ClientComponent() {
 ```tsx:actions.ts
 const myAction = async (formData) => {
   // hidden に設定した id を取得する
-  const id = formData.get('id')
-  // ...
+  const id = formData.get("user-id");
+  console.log(id); // userId-1
 }
 ```
 
@@ -87,6 +89,8 @@ Chrome の DevTools 上や OWASP ZAP のようなプロキシツールを用い�
 
 DevToolsなどでソースコードを確認すると、`input type="hidden"` に設定された値も表示されてしまいます。そのため、機密性の高い情報には適していません。
 
+![DevToolsで表示したinput type="hidden"属性を持つ要素"](/images/server-actions-bind/hidden-devtools.png)
+
 ## bind を使用する
 
 Next.js ではこの問題を解決するために [`bind`](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#passing-additional-arguments) というメソッドを使用することができます。
@@ -94,40 +98,45 @@ Next.js ではこの問題を解決するために [`bind`](https://nextjs.org/d
 `bind` は Server Component と Client Component のどちらでも使用することが可能です。
 また、プログレッシブエンハンスメントと互換性があるため、JavaScriptが無効になっている環境でも機能します。
 
-`bind` を使用することでフォームの入力値以外の情報がブラウザに表示されることなく、セキュアなデータの受け渡しが可能になります。
+~~`bind` を使用することでフォームの入力値以外の情報がブラウザに表示されることなく、セキュアなデータの受け渡しが可能になります。~~
+
+2024/2/26 追記: `bind` を使用すると `name` は `$ACTION_2:1` のように変数名とは異なる形式で表示される一方で、`value` 属性の内容はブラウザ上で直接確認できてしまいます。
+また、`bind` で設定された値は JavaScript が無効な環境では、ブラウザ上で値を書き換えることが可能になってしまうため、セキュリティ上のリスクを生じることに注意が必要です。
+
+![DevToolsで表示したbind属性を使用した要素](/images/server-actions-bind/bind-devtools.png)
 
 ```tsx
-'use client'
- 
-import { updateUser } from './actions'
- 
+"use client";
+
+import { updateUser } from "./actions";
+
 export function UserProfile({ userId }) {
   // bind で userId を渡す
-  const updateUserWithId = updateUser.bind(null, userId)
- 
+  const updateUserWithId = updateUser.bind(null, userId);
+
   return (
-    {/* フォームの action 属性に bind した関数を渡す */}
+    // フォームの action 属性に bind した関数を渡す
     <form action={updateUserWithId}>
       <input type="text" name="name" />
       <button type="submit">Update User Name</button>
     </form>
-  )
+  );
 }
 ```
 
 サーバー側の関数には、`formData` オブジェクトとは別にバインドした引数を受け取るように定義する必要があります。
 
 ```tsx
-'use server'
- 
+"use server";
+
 // bind で渡した引数を受け取る
-export async function updateUser(userId, formData) {
-  // userId を使用してデータベースにアクセスする処理
+export const updateUser = async (userId: string, formData: FormData) => {
+  console.log("userId", userId); // userId-1
   // ...
 }
 ```
 
-これにより、フォームのデータがブラウザで直接表示されることはありません。
+~~これにより、フォームのデータがブラウザで直接表示されることはありません。~~
 
 ### Controlled コンポーネントとの組み合わせ
 
@@ -147,10 +156,12 @@ export const MyInput = ({ value, onChange }: Props) => {
 ```
 
 ```tsx:client-component.tsx
-export default function App() {
+"use client";
+
+export function ClientComponent() {
   const [value, setValue] = useState("");
   // bind を使用して state を渡す
-  const actionWithState = myAction.bind(null, value);
+  const actionWithState = updateUser.bind(null, value);
 
   return (
     <form action={actionWithState}>
@@ -165,9 +176,13 @@ export default function App() {
 
 ## まとめ
 
-`bind` を使用することで、安全にデータの受け渡しを行うことができます。`useState` で状態管理している Controlled コンポーネントとも組み合わせて使えることができるので、柔軟に扱うことができそうですね。
+~~`bind` を使用することで、安全にデータの受け渡しを行うことができます。`useState` で状態管理している Controlled コンポーネントとも組み合わせて使えることができるので、柔軟に扱うことができそうですね。~~
+
+2024/2/26 追記:
+`bind` を使用することで、`<input type="hidden">` に比べると多少はセキュリティが向上しますが、JavaScript を無効にした場合はブラウザ上で書き換えることが可能になってしまうため、セキュリティ上の問題があります。詳しくは [Server Actionsにユーザ操作されたくないデータは渡さない](https://zenn.dev/moozaru/articles/c3bfd1a7e3c004) をご参照ください。
 
 ## 参考
 
 https://nextjs.org/docs/app/api-reference/functions/server-actions#binding-arguments
 https://nextjs.org/learn/dashboard-app/mutating-data#4-pass-the-id-to-the-server-action
+https://zenn.dev/moozaru/articles/c3bfd1a7e3c004
