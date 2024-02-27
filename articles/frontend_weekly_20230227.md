@@ -53,22 +53,21 @@ Basename や Cloudflare Pages のサポートなどが追加されています�
 
 https://github.com/unadlib/mutability
 
-ミュータブルなオブジェクトに対して、トランザクショナルな状態更新ができるライブラリ。
+ミュータブルなオブジェクトを transactional に更新できるライブラリ。
 状態更新に失敗した場合には、ロールバックすることができるようです。
 
 ## JSDoc as an alternative TypeScript syntax
 
 https://alexharri.com/blog/jsdoc-as-an-alternative-typescript-syntax
 
-JavaScript を書く必要がある場合でも、TypeScript コンパイラーは JSDoc を解釈するので JSDoc で型を付けることができるという記事です。
-何らかの理由で TypeScript を使用できない場合は、JSDoc を試してみると良さそうですね。
+TypeScript の型定義を JSDoc で定義する方法を紹介しています。
+TypeScript コンパイラーは JSDoc を解釈できるので、JavaScriptで型定義を行いたい場合はJSDocを使えます。
 
 ## Support for align-content in block and table layouts  |  Blog  |  Chrome for Developers
 
 https://developer.chrome.com/blog/align-content?hl=en
 
-Chrome 123 以降でブロックコンテナーとテーブルセルに対して align-content が使用できるようになりました。flex や grid を使用せずに中央揃えができて便利そうです。ただし仕様のステータスは [Editor's Draft](https://drafts.csswg.org/css-align/#align-justify-content
-) なので、もう少し先の話かもしれません。
+Chrome 123 以降でブロックコンテナーとテーブルセルに対して align-content が使用できるようになりました。flex や grid を使用せずに中央揃えができて便利そうです。ただし仕様のステータスは [Editor's Draft](https://drafts.csswg.org/css-align/#align-justify-content) なので、主要ブラウザでの実装が揃うのはもう少し先の話かもしれません。
 
 ## #62439 Docs: Add CORS examples
 
