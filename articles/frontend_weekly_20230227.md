@@ -1,9 +1,10 @@
 ---
 title: "Remix 2.7.0 リリースなど : Cybozu Frontend Weekly (2023-02-27号)"
 emoji: "👋"
-type: "tech" # tech: 技術記事 / idea: アイデア
+type: "tech"
 topics: [cybozufrontendweek, frontend]
 published: false
+publication_name: "cybozu_frontend"
 ---
 
 こんにちは！サイボウズ株式会社フロントエンドエンジニアの[まっつー](https://twitter.com/ryo_manba)です。
