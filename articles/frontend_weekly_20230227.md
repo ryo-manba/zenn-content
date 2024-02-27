@@ -3,7 +3,7 @@ title: "Remix 2.7.0 リリースなど : Cybozu Frontend Weekly (2023-02-27号)"
 emoji: "👋"
 type: "tech"
 topics: [cybozufrontendweek, frontend]
-published: false
+published: true
 publication_name: "cybozu_frontend"
 ---
 
