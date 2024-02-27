@@ -54,7 +54,7 @@ Basename や Cloudflare Pages のサポートなどが追加されています�
 https://github.com/unadlib/mutability
 
 ミュータブルなオブジェクトを transactional に更新できるライブラリ。
-状態更新に失敗した場合には、ロールバックすることができるようです。
+オブジェクトの更新時に error が throw されると更新前の値にロールバックされるようです。
 
 ## JSDoc as an alternative TypeScript syntax
 
