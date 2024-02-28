@@ -1,0 +1,175 @@
+---
+title: "Bundle Analyzer で Server Components と Client Components のバンドルサイズを可視化する"
+emoji: "🔍"
+type: "tech"
+topics: ['react', 'nextjs', 'フロントエンド']
+published: false
+publication_name: "cybozu_frontend"
+---
+
+この記事では、Next.js で Bundle Analyzer を導入して、Server Components と Client Components のバンドルサイズを以下のパターンで比較します。
+
+- Server Components と Client Components の両方でライブラリを利用する
+- Server Components のみでライブラリを利用する
+- Composition Pattern を使用して Server Components のみでライブラリを利用する
+
+比較には Node.js とブラウザの両方で動作する [date-fns](https://date-fns.org/) を利用します。
+
+:::message
+Bundle Analyzer の導入手順は公式ドキュメントを参考にしてください。
+
+https://nextjs.org/docs/app/building-your-application/optimizing/bundle-analyzer
+:::
+
+## Server Components と Client Components の両方でライブラリを利用する
+
+以下のコードは、Server Components と Client Components の両方で `date-fns` を利用しています。
+
+```tsx:app/both-use-date-fns/page.tsx
+import { ServerComponent } from "./server-component";
+import { ClientComponent } from "./client-component";
+
+export default function App() {
+  return (
+    <>
+      <ServerComponent />
+      <ClientComponent />
+    </>
+  );
+}
+```
+
+```tsx:app/both-use-date-fns/server-component.tsx
+import { format } from "date-fns";
+
+export const ServerComponent = () => {
+  const date = format(new Date(), "yyyy-MM-dd");
+  return <div>Server Component: ${date}</div>;
+};
+```
+
+```tsx:app/both-use-date-fns/client-component.tsx
+"use client";
+import { format } from "date-fns";
+
+export const ClientComponent = () => {
+  const date = format(new Date(), "yyyy-MM-dd");
+  return (
+    <>
+      <div>Client Component: ${date}</div>
+      <button onClick={() => alert("Hello!")}>Click me!</button>
+    </>
+  );
+};
+```
+
+画面上では次のように表示されます。
+
+![Server Components と Client Components の両方で `date-fns` を利用した画面](/images/next-bundle-analyzer/both-use-date-fns-page.png)
+
+Bundle Analyzer を使用した結果は次のように表示されます。
+
+![Server Components と Client Components の両方で `date-fns` を利用した Bundle Analyzer の結果](/images/next-bundle-analyzer/both-use-date-fns-bundle-analyzer.png)
+
+`date-fns` の `format` 関数がクライアントに配信されているみたいですね。
+
+![Server Components と Client Components の両方で `date-fns` を利用した Bundle Analyzer の結果（client-component.tsx)](/images/next-bundle-analyzer/both-use-date-fns-client.png)
+
+右側を拡大してみると `date-fns` と比べて、とても小さいですが `client-component.tsx` が配信されていることが分かります。
+
+## Server Components のみでライブラリを利用する
+
+次に `date-fns` を Server Components のみで使用している場合を確認します。
+
+```tsx:app/server-only-use-date-fns/client-component.tsx
+"use client";
+
+export const ClientComponent = () => {
+  return (
+    <>
+      <div>Client Component</div>
+      <button onClick={() => alert("Hello!")}>Click me!</button>
+    </>
+  );
+};
+```
+
+Client Components から `date-fns` を削除しました。
+
+![Server Components のみで `date-fns` を利用した画面](/images/next-bundle-analyzer/server-only-use-date-fns-page.png)
+
+表示から Server Components のみが `date-fns` を使用していることが確認できます。
+
+![Server Components のみで `date-fns` を利用した Bundle Analyzerの結果](/images/next-bundle-analyzer/server-only-use-date-fns-bundle-analyzer.png)
+
+Bundle Analyzer の結果から、Client Components で `date-fns` を使用していないため、クライアントに配信されていないことが確認できます。Server Components で使用したライブラリはクライアントのバンドルサイズに影響を与えないことが分かりますね。
+
+## Composition Pattern を使用して Server Components のみでライブラリを利用する
+
+最後に [Composition Pattern](https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns#supported-pattern-passing-server-components-to-client-components-as-props) を使用して Server Components のみで `date-fns` を使用したパターンを確認します。
+
+```tsx:app/composition-pattern/page.tsx
+import { ServerComponent } from "./server-component";
+import { ClientComponent } from "./client-component";
+
+export default function App() {
+  return (
+    <ClientComponent>
+      <ServerComponent />
+    </ClientComponent>
+  );
+}
+```
+
+Server Components をClient Components の `children` として渡します。
+
+```tsx:app/composition-pattern/client-component.tsx
+"use client";
+
+export const ClientComponent = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  return (
+    <>
+      {children}
+      <div>Client Component</div>
+      <button onClick={() => alert("Hello!")}>Click me!</button>
+    </>
+  );
+};
+```
+
+Client Component は、`children` を受け取り、そのままレンダリングします。
+Server Component のコードは以前と同じです。
+
+![Composition Pattern を使用して Server Components のみで `date-fns` を利用した画面](/images/next-bundle-analyzer/composition-pattern-page.png)
+
+表示から Server Components のみが `date-fns` を使用していることが確認できます。
+
+![Composition Pattern を使用して Server Components のみで `date-fns` を利用した Bundle Analyzer の結果](/images/next-bundle-analyzer/composition-pattern-bundle-analyzer.png)
+
+Bundle Analyzer を使用した結果を見ると、`format` 関数がクライアントに配信されていないことが確認できます。これにより、Composition Pattern を使用することで、Server Components でのみ使用されるライブラリがクライアントのバンドルサイズに影響を与えないことが分かりますね。
+
+## バンドルサイズの比較
+
+`date-fns` と各ページのバンドルサイズを比較してみましょう。
+
+![バンドルサイズの比較](/images/next-bundle-analyzer/bundle-size-comparison.png)
+
+以下がそれぞれのファイルサイズです（[Parsed](https://github.com/webpack-contrib/webpack-bundle-analyzer?tab=readme-ov-file#parsed)）
+
+- Server Components と Client Components の両方で `date-fns` を利用した場合 : 535B
+- Server Components のみで `date-fns` を利用した場合 : 469B + 20.31KB (`date-fns` )
+- Composition Pattern を使用して Server Components のみで `date-fns` を利用した場合 : 495B
+
+各ファイルでコードが異なるため多少の差異はありますが、明らかに `date-fns` が Client Components で使用された場合のバンドルサイズが大きいことが確認できます。
+
+## まとめ
+
+Server と Client の境界を適切にすることで、バンドルサイズの削減に繋がることが視覚的に確認できました。特に Composition Pattern は上手く活用できると良さそうですね。
+
+試したコードは以下のリポジトリにあるので、興味があれば参考までにご覧ください。
+
+https://github.com/ryo-manba/next-bandle-analyzer
