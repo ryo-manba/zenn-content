@@ -158,13 +158,17 @@ Bundle Analyzer を使用した結果を見ると、`format` 関数がクライ�
 
 ![バンドルサイズの比較](/images/next-bundle-analyzer/bundle-size-comparison.png)
 
-以下がそれぞれのファイルサイズです（[Parsed](https://github.com/webpack-contrib/webpack-bundle-analyzer?tab=readme-ov-file#parsed)）
+以下の表は、ファイルサイズを [parsed サイズ](https://github.com/webpack-contrib/webpack-bundle-analyzer?tab=readme-ov-file#parsed)と [gzip サイズ](https://github.com/webpack-contrib/webpack-bundle-analyzer?tab=readme-ov-file#gzip)で示しています。サイズはバイト単位（B）で統一しています。
 
-- Server Components と Client Components の両方で `date-fns` を利用した場合 : 535B
-- Server Components のみで `date-fns` を利用した場合 : 469B + 20.31KB (`date-fns` )
-- Composition Pattern を使用して Server Components のみで `date-fns` を利用した場合 : 495B
+| 使用パターン | parsed サイズ (B) | gzip サイズ (B) |
+| --------------------------------- | ----------------- | --------------- |
+| **Server + Client でライブラリを利用** | 21,266 (469B + 20,797B `date-fns`) | 6,044 (361B + 5,683B `date-fns`) |
+| **Server のみでライブラリを利用** | 535 | 312 |
+| **Composition Pattern で Server のみでライブラリを利用** | 495 | 322 |
 
-各ファイルでコードが異なるため多少の差異はありますが、明らかに `date-fns` が Client Components で使用された場合のバンドルサイズが大きいことが確認できます。
+この表から、特に Server Components と Client Components の両方で `date-fns` を利用した場合のバンドルサイズが大きくなることが分かります。`date-fns` のサイズを加味すると、parsed サイズでは約20.31KB、gzip サイズでは約5.55KB の増加が見られます。
+
+不必要なライブラリやコードをクライアントサイドに配信しないようにすることが、バンドルサイズ削減のために重要であることが分かりますね。
 
 ## まとめ
 
