@@ -3,7 +3,7 @@ title: "Bundle Analyzer で Server Components と Client Components のバンド
 emoji: "🔍"
 type: "tech"
 topics: ['react', 'nextjs', 'フロントエンド']
-published: false
+published: true
 publication_name: "cybozu_frontend"
 ---
 
