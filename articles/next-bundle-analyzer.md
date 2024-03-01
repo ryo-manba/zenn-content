@@ -168,7 +168,7 @@ Bundle Analyzer を使用した結果を見ると、`format` 関数がクライ�
 
 この表から、特に Server Components と Client Components の両方で `date-fns` を利用した場合のバンドルサイズが大きくなることが分かります。`date-fns` のサイズを加味すると、parsed サイズでは約20.31KB、gzip サイズでは約5.55KB の増加が見られます。
 
-なお、静的ファイルを配信する際は圧縮を利用するため、バンドルサイズの差は gzip された単位で比較することが重要になります。最近では gzip よりも圧縮率のいい、[brotil](https://blog.cloudflare.com/this-is-brotli-from-origin-ja-jp) を利用することも増えてきているようです。
+なお、静的ファイルを配信する際は圧縮を利用するため、バンドルサイズの差は gzip された単位で比較することが重要になります。最近では gzip よりも圧縮率のいい、[brotil を利用することも増えてきているようです](https://blog.cloudflare.com/this-is-brotli-from-origin-ja-jp)。
 
 ## まとめ
 
