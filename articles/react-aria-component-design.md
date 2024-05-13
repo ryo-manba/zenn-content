@@ -168,7 +168,7 @@ function DatePickerClearButton() {
   const state = useContext(DatePickerStateContext);
   return (
     <Button onPress={() => state.setValue(null)}>
-      Clear
+      ✕
     </Button>
   );
 }
@@ -185,6 +185,8 @@ function DatePickerClearButton() {
 ```
 
 Context には、コンポーネントの内部の状態が提供されており、`children` から `useContext` を使用してアクセスすることができます。DatePicker の `children` に配置された `DatePickerClearButton` は、この Context にアクセスすることで、選択された日付をクリアする機能を提供しています。
+
+![DatePicker にクリアボタンを追加した様子。](/images/react-aria-component-design/date-field-clear.png)
 
 `<input type='date'/>` のように単一のコンポーネントで完結する設計の場合、内部の実装をカスタマイズすることが困難ですが、このように Context を介して内部の状態にアクセスし、要素を追加できることによって、独自のカスタマイズが可能となっています。
 
