@@ -87,7 +87,7 @@ import {TextField, Label, Input} from 'react-aria-components';
 
 ![TextField を画面に反映させた様子。](/images/react-aria-component-design/text-field.png)
 
-表面上は単なる `<input>` と `<label>` が配置されているように見えますが、実際には TextField によって関連付けが行われています。
+表面上は単なる `<label>` と `<input>` が配置されているように見えますが、実際には TextField によって関連付けが行われています。
 具体的には `<label>` の `for` 属性に `<input>` の `id` が紐付けられ、`<input>` には `<label>` の `id` が `aria-labelledby` 属性として設定されます。
 
 ![TextFieldのHTML。id と for 属性が反映されている。](/images/react-aria-component-design/text-field-html.png)
@@ -151,8 +151,6 @@ let {labelProps, inputProps} = useTextField({...props}, inputRef);
 
 [useTextField](https://react-spectrum.adobe.com/react-aria/useTextField.html) を利用して props を生成し、Provider を介して、各子要素にコンテキストが提供されています。この仕組みにより、TextField 配下に配置された Label や Input は、TextField から提供されたコンテキストを利用して props を取得することが可能となっています。
 
-このタグをネストさせる構成は、組み込みの HTML タグや Jeremy が [HTML Web Components](https://adactio.com/journal/20618) と呼んでいるものに類似しており、拡張性を重視したコンポーネント設計が実現されているようです。
-
 ## Context を活用したカスタマイズ
 
 コンポジションの設計により Context が活用できるため、コンポーネントの内部に独自の機能を組み込むことも可能になります。
@@ -209,4 +207,3 @@ https://react-spectrum.adobe.com/react-aria/components.html
 - [Advanced Customization – React Aria](https://react-spectrum.adobe.com/react-aria/advanced.html)
 - [React Component Composition Explained | Felix Gerschau](https://felixgerschau.com/react-component-composition/)
 - [Rendering: Composition Patterns | Next.js](https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns)
-- [Adactio: Journal—HTML web components](https://adactio.com/journal/20618)
