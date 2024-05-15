@@ -3,7 +3,7 @@ title: "拡張性に優れた React Aria のコンポーネント設計"
 emoji: "😺"
 type: "tech"
 topics: ["react", "reactaria", "フロントエンド"]
-published: false
+published: true
 publication_name: "cybozu_frontend"
 ---
 
