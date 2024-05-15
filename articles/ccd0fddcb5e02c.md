@@ -2,7 +2,7 @@
 title: "React Ariaを用いてアクセシブルなReactコンポーネントを作成する"
 emoji: "🐕"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["React", "a11y", "アクセシビリティ"]
+topics: ["React", "a11y", "アクセシビリティ", "reactaria"]
 published: true
 ---
 
