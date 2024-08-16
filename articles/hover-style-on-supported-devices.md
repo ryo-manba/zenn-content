@@ -3,7 +3,8 @@ title: "タッチデバイスでホバースタイルを回避する方法"
 emoji: "🕊️"
 type: "tech"
 topics: ["CSS", "React"]
-published: false
+published: true
+published_at: 2024-08-16 11:00
 publication_name: "cybozu_frontend"
 ---
 
@@ -105,14 +106,14 @@ export default function Page() {
 }
 ```
 
-この例では、ホバー状態に応じてインラインスタイルを適用していますが、`data` 属性を利用してスタイルを分離することも可能です。
+この例では、ホバー状態に応じてインラインスタイルを適用していますが、[`data` 属性](https://developer.mozilla.org/docs/Learn/HTML/Howto/Use_data_attributes)を利用してスタイルを分離することも可能です。
 
 @[stackblitz](https://stackblitz.com/edit/react-hover-handler?embed=1&file=src%2FApp.tsx)
 
 ### おまけ: React Aria の `useHover` フック
 
 さらに高度なホバーの制御が必要な場合は、React Aria の [`useHover`](https://react-spectrum.adobe.com/react-aria/useHover.html) が便利です。
-このフックを利用すると、要素が無効化されている場合にはホバーの判定を無効化したり、[iOS 13 以前で発生していたタッチイベント後にマウスイベントが発生する不具合](https://bugs.webkit.org/show_bug.cgi?id=214609)や、[Portal を介したイベント伝播の問題](https://github.com/facebook/react/issues/19637#issuecomment-850594683)など、より複雑なユースケースにも対応できます。
+このフックを利用すると、要素に `disabled` が付与されている場合にはホバーの判定を無効化したり、[iOS 13 以前で発生していたタッチイベント後にマウスイベントが発生する不具合](https://bugs.webkit.org/show_bug.cgi?id=214609)や、[Portal を介したイベント伝播の問題](https://github.com/facebook/react/issues/19637#issuecomment-850594683)など、より複雑なユースケースにも対応できます。
 
 詳しくは [Building a Button Part 2: Hover Interactions](https://react-spectrum.adobe.com/blog/building-a-button-part-2.html) が参考になるので、興味がある方はご覧ください。
 
