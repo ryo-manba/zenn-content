@@ -1,5 +1,5 @@
 ---
-title: "Remix 2.7.0 リリースなど : Cybozu Frontend Weekly (2023-02-27号)"
+title: "Remix 2.7.0 リリースなど : Cybozu Frontend Weekly (2024-02-27号)"
 emoji: "👋"
 type: "tech"
 topics: [cybozufrontendweek, frontend]
