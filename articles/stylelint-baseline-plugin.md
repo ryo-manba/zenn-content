@@ -127,7 +127,7 @@ https://github.com/GoogleChromeLabs/baseline-demos/tree/main/tooling/stylelint
 
 `stylelint-plugin-use-baseline` を導入すると、Stylelint でも Baseline のチェックが簡単に行えます。ESLint の `use-baseline` と同じ使い勝手なので移行もスムーズに行えます。ぜひお試しください！
 
-フィードバックや改善提案は、[GitHub Issues]((https://github.com/ryo-manba/stylelint-plugin-use-baseline/issues)) までお気軽にお寄せください。
+フィードバックや改善提案は、[GitHub Issues](https://github.com/ryo-manba/stylelint-plugin-use-baseline/issues) までお気軽にお寄せください。
 
 ---
 
