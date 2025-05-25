@@ -87,7 +87,7 @@ Chrome の DevTools 上や OWASP ZAP のようなプロキシツールを用い�
 
 #### 機密データの露出
 
-DevToolsなどでソースコードを確認すると、`input type="hidden"` に設定された値も表示されてしまいます。そのため、機密性の高い情報には適していません。
+DevTools などでソースコードを確認すると、`input type="hidden"` に設定された値も表示されてしまいます。そのため、機密性の高い情報には適していません。
 
 ![DevToolsで表示したinput type="hidden"属性を持つ要素"](/images/server-actions-bind/hidden-devtools.png)
 
@@ -96,9 +96,7 @@ DevToolsなどでソースコードを確認すると、`input type="hidden"` �
 Next.js ではこの問題を解決するために [`bind`](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#passing-additional-arguments) というメソッドを使用することができます。
 
 `bind` は Server Component と Client Component のどちらでも使用することが可能です。
-また、プログレッシブエンハンスメントと互換性があるため、JavaScriptが無効になっている環境でも機能します。
-
-~~`bind` を使用することでフォームの入力値以外の情報がブラウザに表示されることなく、セキュアなデータの受け渡しが可能になります。~~
+また、プログレッシブエンハンスメントと互換性があるため、JavaScript が無効になっている環境でも機能します。
 
 2024/2/26 追記: `bind` を使用すると `name` は `$ACTION_2:1` のように変数名とは異なる形式で表示される一方で、`value` 属性の内容はブラウザ上で直接確認できてしまいます。
 また、`bind` で設定された値は JavaScript が無効な環境では、ブラウザ上で値を書き換えることが可能になってしまうため、セキュリティ上のリスクを生じることに注意が必要です。
@@ -133,10 +131,8 @@ export function UserProfile({ userId }) {
 export const updateUser = async (userId: string, formData: FormData) => {
   console.log("userId", userId); // userId-1
   // ...
-}
+};
 ```
-
-~~これにより、フォームのデータがブラウザで直接表示されることはありません。~~
 
 ### Controlled コンポーネントとの組み合わせ
 
@@ -176,10 +172,8 @@ export function ClientComponent() {
 
 ## まとめ
 
-~~`bind` を使用することで、安全にデータの受け渡しを行うことができます。`useState` で状態管理している Controlled コンポーネントとも組み合わせて使えることができるので、柔軟に扱うことができそうですね。~~
-
 2024/2/26 追記:
-`bind` を使用することで、`<input type="hidden">` に比べると多少はセキュリティが向上しますが、JavaScript を無効にした場合はブラウザ上で書き換えることが可能になってしまうため、セキュリティ上の問題があります。詳しくは [Server Actionsにユーザ操作されたくないデータは渡さない](https://zenn.dev/moozaru/articles/c3bfd1a7e3c004) をご参照ください。
+`bind` を使用することで、`<input type="hidden">` に比べると多少はセキュリティが向上しますが、JavaScript を無効にした場合はブラウザ上で書き換えることが可能になってしまうため、セキュリティ上の問題があります。詳しくは [Server Actions にユーザ操作されたくないデータは渡さない](https://zenn.dev/moozaru/articles/c3bfd1a7e3c004) をご参照ください。
 
 ## 参考
 

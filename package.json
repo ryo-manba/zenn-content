@@ -4,6 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "preview": "npx zenn preview --port 3333",
+    "new:article": "npx zenn new:article",
+    "lint:md": "markdownlint \"**/*.md\"",
+    "lint:md:fix": "markdownlint --fix \"**/*.md\"",
+    "lint:txt": "textlint \"**/*.md\"",
+    "lint:txt:fix": "textlint \"**/*.md\" --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,5 +18,10 @@
   "dependencies": {
     "zenn-cli": "^0.1.159"
   },
-  "packageManager": "pnpm@10.11.0"
+  "packageManager": "pnpm@10.11.0",
+  "devDependencies": {
+    "markdownlint": "^0.38.0",
+    "markdownlint-cli": "^0.45.0",
+    "textlint": "^14.7.2"
+  }
 }

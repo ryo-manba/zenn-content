@@ -104,7 +104,6 @@ return (
 
 `useButton` がどのようにしてアクセシビリティ対応を実現しているかも少しだけ見てみましょう。
 
-
 https://github.com/adobe/react-spectrum/blob/%40adobe/react-spectrum%403.34.0/packages/%40react-aria/button/src/useButton.ts#L69-L86
 
 この処理では、`<a>` 要素や `<input>` 要素など `button` 要素以外でボタンを作成する場合設定を行っています。例えば、`tabindex` を付与することで、タブキーによるフォーカス移動を可能にしたり、`role="button"` の設定をしていることがわかります。他にも各要素ごとにプロパティが設定されていることが確認できますね。
