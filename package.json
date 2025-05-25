@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "preview": "npx zenn preview --port 3333",
-    "new:article": "npx zenn new:article",
+    "preview": "pnpm zenn preview",
+    "new:article": "pnpm zenn new:article",
     "lint:md": "markdownlint \"**/*.md\"",
     "lint:md:fix": "markdownlint --fix \"**/*.md\"",
     "lint:txt": "textlint \"**/*.md\"",
