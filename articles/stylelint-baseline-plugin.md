@@ -121,7 +121,7 @@ https://github.com/GoogleChromeLabs/baseline-demos/tree/main/tooling/stylelint
 
 このプラグインは、ESLintの [use-baseline](https://github.com/captainbrosset/eslint-css/blob/main/docs/rules/use-baseline.md) と同じインターフェースと挙動になるように設計されています。
 
-[年指定できる機能](https://github.com/ryo-manba/stylelint-plugin-use-baseline/pull/7)や [Baseline データの不具合の修正](https://github.com/ryo-manba/stylelint-plugin-use-baseline/issues/13)などは、Baseline の DevRel である [rviscomi 氏](https://github.com/rviscomi) のご協力によるものです。お力添えに感謝します。
+[年指定できる機能](https://github.com/ryo-manba/stylelint-plugin-use-baseline/pull/7)や [Baseline データの不具合の修正](https://github.com/ryo-manba/stylelint-plugin-use-baseline/pull/15)などは、Baseline の DevRel である [rviscomi 氏](https://github.com/rviscomi) のご協力によるものです。お力添えに感謝します。
 
 ## まとめ
 
