@@ -2,7 +2,7 @@
 title: "Bundle Analyzer で Server Components と Client Components のバンドルサイズを可視化する"
 emoji: "🔍"
 type: "tech"
-topics: ['react', 'nextjs', 'フロントエンド']
+topics: ["react", "nextjs", "フロントエンド"]
 published: true
 publication_name: "cybozu_frontend"
 ---
@@ -73,7 +73,7 @@ Bundle Analyzer を使用した結果は次のように表示されます。
 
 `date-fns` の `format` 関数がクライアントに配信されているみたいですね。
 
-![Server Components と Client Components の両方で `date-fns` を利用した Bundle Analyzer の結果（client-component.tsx)](/images/next-bundle-analyzer/both-use-date-fns-client.png)
+![Server Components と Client Components の両方で `date-fns` を利用した Bundle Analyzer の結果 (client-component.tsx)](/images/next-bundle-analyzer/both-use-date-fns-client.png)
 
 右側を拡大してみると `date-fns` と比べて、とても小さいですが `client-component.tsx` が配信されていることが分かります。
 
@@ -121,7 +121,7 @@ export default function App() {
 }
 ```
 
-Server Components をClient Components の `children` として渡します。
+Server Components を Client Components の `children` として渡します。
 
 ```tsx:app/composition-pattern/client-component.tsx
 "use client";
@@ -158,15 +158,15 @@ Bundle Analyzer を使用した結果を見ると、`format` 関数がクライ�
 
 ![バンドルサイズの比較](/images/next-bundle-analyzer/bundle-size-comparison.png)
 
-以下の表は、ファイルサイズを [parsed サイズ](https://github.com/webpack-contrib/webpack-bundle-analyzer?tab=readme-ov-file#parsed)と [gzip サイズ](https://github.com/webpack-contrib/webpack-bundle-analyzer?tab=readme-ov-file#gzip)で示しています。サイズはバイト単位（B）で統一しています。
+以下の表は、ファイルサイズを [parsed サイズ](https://github.com/webpack-contrib/webpack-bundle-analyzer?tab=readme-ov-file#parsed)と [gzip サイズ](https://github.com/webpack-contrib/webpack-bundle-analyzer?tab=readme-ov-file#gzip)で示しています。サイズはバイト単位 (B) で統一しています。
 
-| 使用パターン | parsed サイズ (B) | gzip サイズ (B) |
-| --------------------------------- | ----------------- | --------------- |
-| **Server + Client でライブラリを利用** | 21,266 (535 + 20,797: `date-fns`) | 6,044 (361 + 5,683: `date-fns`) |
-| **Server のみでライブラリを利用** | 469 | 312 |
-| **Composition Pattern で Server のみでライブラリを利用** | 495 | 322 |
+| 使用パターン                                             | parsed サイズ (B)                 | gzip サイズ (B)                 |
+| -------------------------------------------------------- | --------------------------------- | ------------------------------- |
+| **Server + Client でライブラリを利用**                   | 21,266 (535 + 20,797: `date-fns`) | 6,044 (361 + 5,683: `date-fns`) |
+| **Server のみでライブラリを利用**                        | 469                               | 312                             |
+| **Composition Pattern で Server のみでライブラリを利用** | 495                               | 322                             |
 
-この表から、特に Server Components と Client Components の両方で `date-fns` を利用した場合のバンドルサイズが大きくなることが分かります。`date-fns` のサイズを加味すると、parsed サイズでは約20.31KB、gzip サイズでは約5.55KB の増加が見られます。
+この表から、特に Server Components と Client Components の両方で `date-fns` を利用した場合のバンドルサイズが大きくなることが分かります。`date-fns` のサイズを加味すると、parsed サイズでは約 20.31KB、gzip サイズでは約 5.55KB の増加が見られます。
 
 静的ファイルを配信する際は圧縮を利用するため、バンドルサイズの差は gzip された単位で比較することが重要になります。最近では gzip よりも圧縮率のいい、[brotil を利用することも増えてきているようです](https://blog.cloudflare.com/this-is-brotli-from-origin-ja-jp)。
 

@@ -10,6 +10,8 @@
     "lint:md:fix": "markdownlint --fix \"**/*.md\"",
     "lint:txt": "textlint \"**/*.md\"",
     "lint:txt:fix": "textlint \"**/*.md\" --fix",
+    "lint": "pnpm run lint:md && pnpm run lint:txt",
+    "lint:fix": "pnpm run lint:md:fix && pnpm run lint:txt:fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -22,6 +24,8 @@
   "devDependencies": {
     "markdownlint": "^0.38.0",
     "markdownlint-cli": "^0.45.0",
-    "textlint": "^14.7.2"
+    "textlint": "^14.7.2",
+    "textlint-filter-rule-comments": "^1.2.2",
+    "textlint-rule-preset-ja-technical-writing": "^12.0.2"
   }
 }

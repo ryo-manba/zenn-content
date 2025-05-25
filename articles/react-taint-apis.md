@@ -15,7 +15,7 @@ https://nextjs.org/blog/security-nextjs-server-components-actions
 
 ## React Taint APIs とは？
 
-React Taint APIs とは、React が experimental バージョンで提供する新しいセキュリティ保護機能の一つです。このAPIを使用することで、誤って Client Component にセキュリティ上の重要なデータが渡されることを防げるようになります。
+React Taint APIs とは、React が experimental バージョンで提供する新しいセキュリティ保護機能の一つです。この API を使用することで、誤って Client Component にセキュリティ上の重要なデータが渡されることを防げるようになります。
 
 具体的には、以下の2つの API が提供されています。
 
@@ -24,7 +24,7 @@ React Taint APIs とは、React が experimental バージョンで提供する�
 
 `taintObjectReference` は、特定のオブジェクト単位で、`taintUniqueValue` は、パスワードやトークンなどの一意な値単位で管理できます。
 
-これらの APIは、データベースから直接生のユーザーデータやセンシティブな情報を取得し、それを安全に React Server Components で表示するための新たなユースケースをサポートするために導入されました。従来、このようなデータの加工やフィルタリングはバックエンドで行われていましたが、Server Components の導入により、この責任がフロントエンドにも及ぶようになったことが背景にあります。
+これらの API は、データベースから直接生のユーザーデータやセンシティブな情報を取得し、それを安全に React Server Components で表示するための新たなユースケースをサポートするために導入されました。従来、このようなデータの加工やフィルタリングはバックエンドで行われていましたが、Server Components の導入により、この責任がフロントエンドにも及ぶようになったことが背景にあります。
 
 React Taint APIs の目的は、このようなセンシティブなデータの取り扱いミスを防ぐことです。
 例えば、アクセストークンやユーザーのパスワードなどを、うっかりクライアントサイドで表示してしまうリスクを減少させることができます。
@@ -33,7 +33,7 @@ React Taint APIs の目的は、このようなセンシティブなデータの
 
 ### 前準備
 
-Next.js の最新の canary バージョンでセットアップします。(canaryで試しましたが、2023/10/27 時点では Next.js 14 でも利用可能です)
+Next.js の最新の canary バージョンでセットアップします。(canary で試しましたが、2023/10/27 時点では Next.js 14 でも利用可能です)
 
 ```bash
 npx create-next-app@canary --ts
@@ -134,10 +134,7 @@ export const getUserWithTaintObjectReference = async (userId: number) => {
   }
 
   // user を Client Component からアクセス禁止にする
-  taintObjectReference(
-    "Do not pass user data to the client", 
-    user
-  );
+  taintObjectReference("Do not pass user data to the client", user);
   return user;
 };
 ```
@@ -173,7 +170,7 @@ export const Profile = async ({ userId }: Props) => {
 ```tsx
 const NestedComponent = ({ user }: { user: User }) => {
   return <InfoCard user={user} />;
-}
+};
 
 export const Profile = async ({ userId }: Props) => {
   const user = await getUserWithTaintObjectReference(userId);
@@ -181,7 +178,7 @@ export const Profile = async ({ userId }: Props) => {
     return <div>User not found.</div>;
   }
   // 階層を深くしてもエラーが発生する
-  return <NestedComponent user={user} />
+  return <NestedComponent user={user} />;
 };
 ```
 
@@ -198,7 +195,7 @@ export const Profile = async ({ userId }: Props) => {
   if (!user) {
     return <div>User not found.</div>;
   }
-  return <InfoCard user={{...user}} />
+  return <InfoCard user={{ ...user }} />;
 };
 ```
 
@@ -228,11 +225,7 @@ export const getUserWithTaintUniqueValue = async (userId: number) => {
   }
 
   // user.password のみを Client Component からアクセス禁止にする
-  taintUniqueValue(
-    "Do not pass password to the client",
-    user,
-    user.password
-  );
+  taintUniqueValue("Do not pass password to the client", user, user.password);
   return user;
 };
 ```
@@ -240,7 +233,7 @@ export const getUserWithTaintUniqueValue = async (userId: number) => {
 上記の関数を用いてユーザー情報を取得した際、ユーザー全体をクライアント側に渡すとエラーが生じます。
 
 ```tsx
-import {　getUserWithTaintUniqueValue } from "./get-user";
+import { getUserWithTaintUniqueValue } from "./get-user";
 import { InfoCard } from "./info-card";
 
 type Props = {
@@ -278,7 +271,7 @@ export const Profile = async ({ userId }: Props) => {
 
 `taintUniqueValue` を実行したパスワード以外の情報は、Client Component に渡せることが確認できました。このように一部のプロパティだけを保護する時に役立ちます。
 
-ちなみに、`taintObjectReference` で分割代入などをしたら結局保護が無効になる話を踏まえると、上記の例でも保護が無効になるように思えますが、`taintUniqueValue` の場合は、分割代入をしても保護が有効になるようです。
+ちなみに `taintObjectReference` で分割代入などをしたら結局保護が無効になる話を踏まえると、上記の例でも保護が無効になるように思えますが、`taintUniqueValue` の場合は、分割代入をしても保護が有効になるようです。
 
 ```tsx
 export const Profile = async ({ userId }: Props) => {

@@ -9,7 +9,7 @@ publication_name: "cybozu_frontend"
 ---
 
 :::message
-この記事は、[CYBOZU SUMMER BLOG FES '24](https://cybozu.github.io/summer-blog-fes-2024/) (Frontend Stage) DAY 16の記事です。
+この記事は、[CYBOZU SUMMER BLOG FES '24](https://cybozu.github.io/summer-blog-fes-2024/) (Frontend Stage) DAY 16 の記事です。
 :::
 
 タッチデバイスではホバー状態が存在しないため、iOS などではタップ時にホバースタイルが適用されて、タップ後もスタイルが維持されることがあります。このような予期しない挙動は、ユーザー体験に悪影響を与える可能性があります。
@@ -50,7 +50,7 @@ Chrome を利用している場合は、[Devtool のデバイスモード](https
 
 [Pointer Events API](https://developer.mozilla.org/docs/Web/API/Pointer_events) を利用することで、マウスやタッチデバイスの操作を検知し、適切なホバースタイルを適用できます。
 
-Pointer Events は、マウス、タッチ、ペンなどのポインティングデバイスに対して発生するDOMイベントです。このイベントを基に、ホバーの状態を管理するカスタムフックを作成できます。
+Pointer Events は、マウス、タッチ、ペンなどのポインティングデバイスに対して発生する DOM イベントです。このイベントを基に、ホバーの状態を管理するカスタムフックを作成できます。
 
 ```tsx:useHover.ts
 import { useState, DOMAttributes } from "react";
@@ -113,7 +113,7 @@ export default function Page() {
 ### おまけ: React Aria の `useHover` フック
 
 さらに高度なホバーの制御が必要な場合は、React Aria の [`useHover`](https://react-spectrum.adobe.com/react-aria/useHover.html) が便利です。
-このフックを利用すると、要素に `disabled` が付与されている場合にはホバーの判定を無効化したり、[iOS 13 以前で発生していたタッチイベント後にマウスイベントが発生する不具合](https://bugs.webkit.org/show_bug.cgi?id=214609)や、[Portal を介したイベント伝播の問題](https://github.com/facebook/react/issues/19637#issuecomment-850594683)など、より複雑なユースケースにも対応できます。
+このフックを利用すると、要素に `disabled` が付与されている場合にはホバーの判定を無効化したり、[iOS 13 以前で発生していたタッチイベント後にマウスイベントが発生する不具合](https://bugs.webkit.org/show_bug.cgi?id=214609)や、[Portal を介したイベント伝播の問題](https://github.com/facebook/react/issues/19637#issuecomment-850594683)などのより複雑なユースケースにも対応できます。
 
 詳しくは [Building a Button Part 2: Hover Interactions](https://react-spectrum.adobe.com/blog/building-a-button-part-2.html) が参考になるので、興味がある方はご覧ください。
 

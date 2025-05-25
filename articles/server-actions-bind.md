@@ -89,7 +89,7 @@ Chrome の DevTools 上や OWASP ZAP のようなプロキシツールを用い�
 
 DevTools などでソースコードを確認すると、`input type="hidden"` に設定された値も表示されてしまいます。そのため、機密性の高い情報には適していません。
 
-![DevToolsで表示したinput type="hidden"属性を持つ要素"](/images/server-actions-bind/hidden-devtools.png)
+![DevToolsで表示したinput type="hidden"属性を持つ要素](/images/server-actions-bind/hidden-devtools.png)
 
 ## bind を使用する
 
